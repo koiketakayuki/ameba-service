@@ -17,10 +17,10 @@ function initialize(config, port) {
     .catch(() => store.close());
   }
 
-  function filterRequest(proc) {
+  function filterRequest(proc, operation) {
     return (req, res) => {
       const recordTypeId = req.body.recordTypeId;
-      const recordType = recordTypeCache.get(recordTypeId);
+      const recordType = recordTypeCache.get(recordTypeId, operation);
 
       res.setHeader('Access-Control-Allow-Origin', '*');
       res.setHeader('Content-Type', 'application/json');
@@ -43,7 +43,7 @@ function initialize(config, port) {
         .then(() => res.send({ ok: true }))
         .catch(e => res.send({ ok: false, message: e.message }));
       });
-    }));
+    }, 'save'));
   }
 
   function initializeReadAPI() {
@@ -57,7 +57,7 @@ function initialize(config, port) {
         .then(result => res.send({ ok: true, result }))
         .catch(e => res.send({ ok: false, message: e.message }));
       });
-    }));
+    }, 'read'));
   }
 
   function initializeUpdateAPI() {
@@ -72,7 +72,7 @@ function initialize(config, port) {
         .then(() => res.send({ ok: true }))
         .catch(e => res.send({ ok: false, message: e.message }));
       });
-    }));
+    }, 'update'));
   }
 
   function initializeDeleteAPI() {
@@ -86,7 +86,7 @@ function initialize(config, port) {
         .then(() => res.send({ ok: true }))
         .catch(e => res.send({ ok: false, message: e.message }));
       });
-    }));
+    }, 'delete'));
   }
 
   function initializeCountAPI() {
@@ -99,7 +99,7 @@ function initialize(config, port) {
         .then(result => res.send({ ok: true, count: result }))
         .catch(e => res.send({ ok: false, message: e.message }));
       });
-    }));
+    }, 'count'));
   }
 
   app.use(bodyParser.urlencoded({
