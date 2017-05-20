@@ -1,8 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const createStore = require('ameba-mongodb-store');
-
-const recordTypeCache = {};
+const recordTypeCache = require('./record-type-cache');
 
 function initialize(config, port) {
   const app = express();
@@ -21,7 +20,7 @@ function initialize(config, port) {
   function filterRequest(proc) {
     return (req, res) => {
       const recordTypeId = req.body.recordTypeId;
-      const recordType = recordTypeCache[recordTypeId];
+      const recordType = recordTypeCache.get(recordTypeId);
 
       res.setHeader('Access-Control-Allow-Origin', '*');
       res.setHeader('Content-Type', 'application/json');
@@ -119,8 +118,8 @@ function initialize(config, port) {
 
 const service = storeConfig =>
   ({
-    register: (recordType) => {
-      recordTypeCache[recordType.id] = recordType;
+    register: (recordType, setting) => {
+      recordTypeCache.register(recordType, setting);
     },
     start: (port) => {
       initialize(storeConfig, port);
