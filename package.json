@@ -25,7 +25,7 @@
     "should": "^11.2.1"
   },
   "dependencies": {
-    "ameba-mongodb-store": "^0.9.2",
+    "ameba-mongodb-store": "^0.9.3",
     "body-parser": "^1.17.1",
     "express": "^4.15.2"
   }
