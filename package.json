@@ -1,6 +1,6 @@
 {
   "name": "ameba-service",
-  "version": "0.9.5",
+  "version": "0.9.6",
   "description": "ameba service",
   "main": "index.js",
   "scripts": {
